@@ -91,7 +91,108 @@ describe("로또 테스트", () => {
     });
   });
 
-  test("예외 테스트", async () => {
-    await runException("1000j");
+  test("잘못된 구입 금액 입력 시 재입력을 요구한다.", async () => {
+    mockRandoms([[1, 2, 3, 4, 5, 6]]);
+    mockQuestions(["1500", "1000", "1,2,3,4,5,6", "7"]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    expect(logs).toContain("[ERROR]");
+    expect(logs).toContain("1개를 구매했습니다.");
   });
+
+  test("잘못된 당첨 번호 입력 시 재입력을 요구한다.", async () => {
+    mockRandoms([[1, 2, 3, 4, 5, 6]]);
+    mockQuestions(["1000", "1,2,3,4,5", "1,2,3,4,5,6", "7"]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    expect(logs).toContain("[ERROR]");
+    expect(logs).toContain("당첨 통계");
+  });
+
+  test("잘못된 보너스 번호 입력 시 재입력을 요구한다.", async () => {
+    mockRandoms([[1, 2, 3, 4, 5, 6]]);
+    mockQuestions(["1000", "1,2,3,4,5,6", "1", "7"]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    expect(logs).toContain("[ERROR]");
+    expect(logs).toContain("당첨 통계");
+  });
+
+  test("1등 당첨 시 수익률이 올바르게 계산된다.", async () => {
+    mockRandoms([[1, 2, 3, 4, 5, 6]]);
+    mockQuestions(["1000", "1,2,3,4,5,6", "7"]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    expect(logs).toContain("6개 일치 (2,000,000,000원) - 1개");
+    expect(logs).toContain("총 수익률은 200000000.0%입니다.");
+  });
+
+  test("2등 당첨 시 수익률이 올바르게 계산된다.", async () => {
+    mockRandoms([[1, 2, 3, 4, 5, 7]]);
+    mockQuestions(["1000", "1,2,3,4,5,6", "7"]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    expect(logs).toContain("5개 일치, 보너스 볼 일치 (30,000,000원) - 1개");
+    expect(logs).toContain("총 수익률은 3000000.0%입니다.");
+  });
+
+  test("모든 로또가 낙첨된 경우 수익률이 0%다.", async () => {
+    mockRandoms([[10, 20, 30, 40, 41, 42]]);
+    mockQuestions(["1000", "1,2,3,4,5,6", "7"]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    expect(logs).toContain("총 수익률은 0.0%입니다.");
+  });
+
+  test("여러 번 잘못된 입력을 해도 게임이 정상적으로 진행된다.", async () => {
+    mockRandoms([[1, 2, 3, 4, 5, 6]]);
+    mockQuestions([
+      "abc",
+      "500",
+      "1000",
+      "1,2,3,4,5",
+      "1,2,3,4,5,46",
+      "1,2,3,4,5,6",
+      "46",
+      "1",
+      "7",
+    ]);
+    const logSpy = getLogSpy();
+
+    const app = new App();
+    await app.run();
+
+    const logs = logSpy.mock.calls.map((call) => call[0]).join("\n");
+    const errorCount = (logs.match(/\[ERROR\]/g) || []).length;
+    expect(errorCount).toBeGreaterThanOrEqual(4);
+    expect(logs).toContain("당첨 통계");
+  });
+});
+
+test("예외 테스트", async () => {
+  await runException("1000j");
 });
