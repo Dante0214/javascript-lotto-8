@@ -9,6 +9,12 @@ export const ERROR_MESSAGES = {
     "[ERROR] 구입 금액은 1,000원 단위의 숫자여야 합니다.",
 
   INVALID_AMOUNT: "[ERROR] 구입 금액은 1,000원 이상이어야 합니다.",
+  INVALID_NUMBER_COUNT: "[ERROR] 로또 번호는 6개여야 합니다.",
+  INVALID_NUMBER_RANGE: "[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.",
+  INVALID_NUMBER_COUNT: "[ERROR] 로또 번호는 6개여야 합니다.",
+  DUPLICATE_NUMBERS: "[ERROR] 로또 번호는 중복될 수 없습니다.",
+  INVALID_NUMBER_FORMAT: "[ERROR] 로또 번호는 숫자여야 합니다.",
+  BONUS_DUPLICATE: "[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.",
 };
 export const INPUT_MESSAGES = {
   PURCHASE_AMOUNT: "구입금액을 입력해 주세요.",
