@@ -32,6 +32,7 @@ export const validateLottoNumbers = (numbers) => {
   if (new Set(numbers).size !== numbers.length) {
     throw new Error(ERROR_MESSAGES.DUPLICATE_NUMBERS);
   }
+  return numbers;
 };
 export const validateBonusNumber = (bonusNumberInput, winningNumbers) => {
   const bonusNumber = Number(bonusNumberInput);

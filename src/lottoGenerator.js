@@ -11,7 +11,7 @@ export const generateLottoNumbers = () => {
 };
 
 export const generateLottos = (amount) => {
-  const count = Math.floor(amount / LOTTO.PRICE);
+  const count = amount / LOTTO.PRICE;
   const lottos = [];
   for (let i = 0; i < count; i++) {
     const numbers = generateLottoNumbers();

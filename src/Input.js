@@ -14,8 +14,7 @@ export const readPurchaseAmount = async () => {
 export const readWinningNumbers = async () => {
   const input = await Console.readLineAsync(INPUT_MESSAGES.WINNING_NUMBERS);
   const numbers = parseNumbers(input);
-  validateLottoNumbers(numbers);
-  return numbers;
+  return validateLottoNumbers(numbers);
 };
 export const readBonusNumber = async (winningNumbers) => {
   const input = await Console.readLineAsync(INPUT_MESSAGES.BONUS_NUMBER);
