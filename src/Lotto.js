@@ -12,7 +12,7 @@ class Lotto {
   }
   matchCount(winningNumbers) {
     return this.#numbers.filter((number) => winningNumbers.includes(number))
-      .lenghth;
+      .length;
   }
   hasNumber(number) {
     return this.#numbers.includes(number);
