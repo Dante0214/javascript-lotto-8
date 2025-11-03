@@ -5,6 +5,12 @@ class Lotto {
     this.#validate(numbers);
     this.#numbers = numbers;
   }
+  getNumbers() {
+    return [...this.#numbers];
+  }
+  getSortedNumbers() {
+    return [...this.#numbers].sort((a, b) => a - b);
+  }
 
   #validate(numbers) {
     if (numbers.length !== 6) {
