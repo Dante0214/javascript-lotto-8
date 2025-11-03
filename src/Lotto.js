@@ -1,24 +1,22 @@
+import { validateLottoNumbers } from "./validators.js";
+
 class Lotto {
   #numbers;
 
   constructor(numbers) {
-    this.#validate(numbers);
-    this.#numbers = numbers;
+    validateLottoNumbers(numbers);
+    this.#numbers = numbers.sort((a, b) => a - b);
   }
   getNumbers() {
     return [...this.#numbers];
   }
-  getSortedNumbers() {
-    return [...this.#numbers].sort((a, b) => a - b);
+  matchCount(winningNumbers) {
+    return this.#numbers.filter((number) => winningNumbers.includes(number))
+      .lenghth;
   }
-
-  #validate(numbers) {
-    if (numbers.length !== 6) {
-      throw new Error("[ERROR] 로또 번호는 6개여야 합니다.");
-    }
+  hasNumber(number) {
+    return this.#numbers.includes(number);
   }
-
-  // TODO: 추가 기능 구현
 }
 
 export default Lotto;
